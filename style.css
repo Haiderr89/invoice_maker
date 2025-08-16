@@ -1,0 +1,372 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    line-height: 1.5;
+  }
+  
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .logo {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border-radius: 8px;
+    display: block;
+  }
+  
+  .brand h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  
+  .hint {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: 2px;
+  }
+  
+  .row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  /* Buttons */
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    background: #3b82f6;
+    color: white;
+  }
+  
+  .btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+  }
+  
+  .btn.secondary {
+    background: #f1f5f9;
+    color: #475569;
+  }
+  
+  .btn.secondary:hover {
+    background: #e2e8f0;
+  }
+  
+  .btn.small {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  /* Cards */
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  /* Grid */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  
+  /* Form Elements */
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #374151;
+    font-size: 14px;
+  }
+  
+  input, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+  
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  /* Items Table */
+  .items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+  }
+  
+  .items-table th,
+  .items-table td {
+    padding: 12px 8px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .items-table th {
+    background: #f8fafc;
+    font-weight: 600;
+    color: #374151;
+    font-size: 13px;
+  }
+  
+  .items-table input,
+  .items-table textarea {
+    border: none;
+    background: transparent;
+    padding: 4px;
+    font-size: 13px;
+  }
+  
+  .items-table input:focus,
+  .items-table textarea:focus {
+    background: #f8fafc;
+    border: 1px solid #3b82f6;
+  }
+  
+  /* Total Box */
+  .total-box {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+  }
+  
+  .total-box > div:first-child {
+    flex: 1;
+  }
+  
+  .totals {
+    min-width: 240px;
+  }
+  
+  .totals .line {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .totals .line.grand {
+    font-weight: 700;
+    font-size: 16px;
+    border-bottom: 2px solid #3b82f6;
+    color: #1e40af;
+  }
+  
+  .totals input {
+    width: 110px;
+    text-align: right;
+    border: 1px solid #d1d5db;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+  /* PDF Preview Styles */
+  .quote {
+    background: white;
+    padding: 40px;
+    margin: 20px 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    font-family: 'Inter', Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.4;
+  }
+  
+  .q-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 20px;
+  }
+  
+  .q-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  .q-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+  
+  .q-meta {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.5;
+  }
+  
+  .q-sep {
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+    margin: 20px 0;
+  }
+  
+  /* PDF Table */
+  .q-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  
+  .q-table th {
+    background: #f8fafc;
+    padding: 12px 8px;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .q-table td {
+    padding: 10px 8px;
+    border: 1px solid #e5e7eb;
+    vertical-align: top;
+  }
+  
+  .q-table td ul {
+    margin: 0;
+    padding-left: 16px;
+  }
+  
+  .q-table td li {
+    margin: 2px 0;
+    font-size: 13px;
+  }
+  
+  /* PDF Footer */
+  .q-footer {
+    display: flex;
+    gap: 24px;
+    margin-top: 30px;
+  }
+  
+  .q-terms {
+    flex: 1;
+  }
+  
+  .q-terms strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+  }
+  
+  .signature {
+    width: 200px;
+    height: 60px;
+    border-bottom: 1px solid #9ca3af;
+    margin-top: 20px;
+  }
+  
+  /* Print/PDF specific styles */
+  @media print {
+    body {
+      background: white;
+    }
+    
+    .no-print {
+      display: none !important;
+    }
+    
+    .quote {
+      box-shadow: none;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .q-table {
+      page-break-inside: avoid;
+    }
+    
+    .q-footer {
+      page-break-inside: avoid;
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .wrap {
+      padding: 12px;
+    }
+    
+    header {
+      flex-direction: column;
+      gap: 16px;
+      align-items: stretch;
+    }
+    
+    .brand {
+      justify-content: center;
+    }
+    
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+    
+    .total-box {
+      flex-direction: column;
+    }
+    
+    .q-head {
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .q-footer {
+      flex-direction: column;
+    }
+  }

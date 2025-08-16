@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quick Quotation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <!-- HEADER -->
+  <header class="no-print">
+    <div class="brand">
+      <span class="logo" title="Your Logo"></span>
+      <div>
+        <h1>Quick Quotation</h1>
+        <div class="hint">Fast English PDF/PNG quotes • Arabic-friendly input</div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn secondary" id="btnLoad">Load last</button>
+      <button class="btn" id="btnSave">Save</button>
+    </div>
+  </header>
+
+  <!-- Business Info -->
+  <div class="card no-print">
+    <div class="grid-2">
+      <div>
+        <label>Business Name</label>
+        <input id="bizName" placeholder="Rise It Furniture" />
+      </div>
+      <div>
+        <label>Business Contact (address • phone • email)</label>
+        <input id="bizContact" placeholder="Rd 1001, Manama • +973 3xxxxxxx • info@example.com" />
+      </div>
+    </div>
+    <div style="margin-top:10px;">
+      <label>Business Logo</label>
+      <input type="file" id="logoInput" accept="image/*" />
+    </div>
+  </div>
+
+  <!-- Customer Info -->
+  <div class="card no-print">
+    <div class="grid-2">
+      <div>
+        <label>Customer Name (English)</label>
+        <input id="custName" placeholder="John Smith" />
+      </div>
+      <div>
+        <label>Phone</label>
+        <input id="custPhone" placeholder="+973 3xxxxxxx" />
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:10px;">
+      <div>
+        <label>Quotation No.</label>
+        <input id="quoteNo" placeholder="2025-001" />
+      </div>
+      <div>
+        <label>Date</label>
+        <input id="quoteDate" type="date" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Items -->
+  <div class="card no-print">
+    <div class="row" style="justify-content:space-between;">
+      <div><strong>Items</strong></div>
+      <div class="row">
+        <button class="btn small" id="btnAdd">+ Add item</button>
+      </div>
+    </div>
+    <table class="items-table" id="itemsTable">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Unit (BHD)</th>
+          <th>Total (BHD)</th>
+          <th>Image</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="itemsBody"></tbody>
+    </table>
+
+    <div class="total-box">
+      <div>
+        <label>Notes (shown on output)</label>
+        <textarea id="notes" placeholder="Delivery in 2 weeks. 50% advance."></textarea>
+      </div>
+      <div class="totals">
+        <div class="line"><span>Subtotal</span><span id="subtotal">0.000</span></div>
+        <div class="line">
+          <span>Discount (BHD)</span>
+          <input id="discount" type="number" inputmode="decimal" value="0" step="0.001" style="width:110px; text-align:right;">
+        </div>
+        <div class="line">
+          <span>Tax %</span>
+          <input id="tax" type="number" inputmode="decimal" value="0" step="0.001" style="width:110px; text-align:right;">
+        </div>
+        <div class="line grand"><span>Total</span><span id="grand">0.000</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="card no-print">
+    <div class="row">
+      <button class="btn" id="btnPDF">Generate Image</button>
+      <button class="btn secondary" id="btnShare">Share via WhatsApp</button>
+    </div>
+    <div class="hint" style="margin-top:8px;">
+      Tip: "Save" keeps a copy in this browser (LocalStorage). "Load last" restores it.
+    </div>
+  </div>
+
+  <!-- PDF/PNG Preview -->
+  <div id="pdfArea" class="quote">
+    <img id="qLogo" class="q-logo" src="" alt="Logo" style="display: none;" />
+    <div class="q-head">
+      <div>
+        <div id="qBizName" class="q-title">Your Furniture Company</div>
+        <div id="qBizContact" class="q-meta">Address • Phone • Email</div>
+      </div>
+      <div class="q-meta" style="text-align:right;">
+        <div><strong>Quotation</strong></div>
+        <div id="qNo">No.: 0001</div>
+        <div id="qDate">Date: 2025-08-14</div>
+      </div>
+    </div>
+    <div class="q-sep"></div>
+    <div style="display:flex; justify-content:space-between; gap:12px;">
+      <div class="q-meta"><strong>Customer:</strong> <span id="qCustName">-</span></div>
+      <div class="q-meta"><strong>Phone:</strong> <span id="qCustPhone">-</span></div>
+    </div>
+    <table class="q-table" style="margin-top:12px;">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Unit</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="qRows"></tbody>
+    </table>
+    <div class="q-footer">
+      <div class="q-terms">
+        <div><strong>Notes / Terms</strong></div>
+        <div id="qNotes">Valid for 30 days. Delivery in 2 weeks. Payment 50% advance, 50% on delivery.</div>
+      </div>
+      <div style="min-width:240px;">
+        <div class="totals">
+          <div class="line"><span>Subtotal</span><span id="qSubtotal">0.000 BHD</span></div>
+          <div class="line"><span>Discount</span><span id="qDiscount">0.000 BHD</span></div>
+          <div class="line"><span>Tax</span><span id="qTax">0.000 BHD</span></div>
+          <div class="line grand"><span>Total</span><span id="qGrand">0.000 BHD</span></div>
+        </div>
+        <div style="margin-top:10px;">
+          <div><strong>Signature</strong></div>
+          <div class="signature"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n) => Number(n || 0).toFixed(3);
+  const state = { items: [] };
+
+  // Utility: wait for all images to load
+  function imagesLoaded(parent) {
+    return Promise.all(
+      Array.from(parent.querySelectorAll("img")).map((img) =>
+        img.complete
+          ? Promise.resolve()
+          : new Promise((res) => {
+              img.onload = img.onerror = res;
+            })
+      )
+    );
+  }
+
+  // Logo upload
+  $("logoInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      $("qLogo").src = ev.target.result;
+      $("qLogo").style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Add / Remove Items
+  function addItem(row = { name: "", desc: "", qty: 1, unit: 0, imgs: [] }) {
+    state.items.push(row);
+    renderItems();
+    syncPreview();
+  }
+  function removeItem(idx) {
+    state.items.splice(idx, 1);
+    renderItems();
+    syncPreview();
+  }
+  window.removeItem = removeItem;
+
+  function renderItems() {
+    const body = $("itemsBody");
+    body.innerHTML = "";
+    state.items.forEach((it, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input value="${it.name}" data-i="${i}" data-k="name" /></td>
+        <td><textarea data-i="${i}" data-k="desc">${it.desc}</textarea></td>
+        <td><input type="number" step="1" min="0" value="${it.qty}" data-i="${i}" data-k="qty" /></td>
+        <td><input type="number" step="0.001" value="${it.unit}" data-i="${i}" data-k="unit" /></td>
+        <td>${fmt(it.qty * it.unit)}</td>
+        <td><input type="file" data-i="${i}" class="itemImg" accept="image/*" multiple /></td>
+        <td><button class="btn small secondary" onclick="removeItem(${i})">Delete</button></td>
+      `;
+      body.appendChild(tr);
+
+      // Multiple images upload
+      tr.querySelector(".itemImg").addEventListener("change", (e) => {
+        const files = Array.from(e.target.files);
+        state.items[i].imgs = [];
+        files.forEach((file) => {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            state.items[i].imgs.push(ev.target.result);
+            syncPreview();
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+    });
+
+    body.querySelectorAll("input,textarea").forEach((inp) => {
+      inp.oninput = (e) => {
+        const i = Number(e.target.dataset.i),
+          k = e.target.dataset.k;
+        let v = e.target.value;
+        if (k === "qty" || k === "unit") v = parseFloat(v) || 0;
+        state.items[i][k] = v;
+        calcTotals();
+        syncPreview();
+      };
+    });
+    calcTotals();
+  }
+
+  function calcTotals() {
+    const sub = state.items.reduce((a, it) => a + it.qty * it.unit, 0);
+    $("subtotal").textContent = fmt(sub);
+    const disc = parseFloat($("discount").value) || 0;
+    const tax = parseFloat($("tax").value) || 0;
+    const grand = (sub - disc) * (1 + tax / 100);
+    $("grand").textContent = fmt(grand);
+  }
+
+  function syncPreview() {
+    $("qBizName").textContent =
+      $("bizName").value || "Your Furniture Company";
+    $("qBizContact").textContent =
+      $("bizContact").value || "Address • Phone • Email";
+    $("qCustName").textContent = $("custName").value || "-";
+    $("qCustPhone").textContent = $("custPhone").value || "-";
+    $("qNo").textContent = "No.: " + ($("quoteNo").value || "0001");
+    $("qDate").textContent =
+      "Date: " + ($("quoteDate").value || new Date().toISOString().slice(0, 10));
+    $("qNotes").textContent = $("notes").value || "Valid for 30 days.";
+
+    const qRows = $("qRows");
+    qRows.innerHTML = "";
+    state.items.forEach((it) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${it.name || ""}</td><td><ul>${it.desc
+        .split(/\n|,|;/)
+        .map((d) => `<li>${d.trim()}</li>`)
+        .join("")}</ul></td><td>${fmt(it.qty)}</td><td>${fmt(
+        it.unit
+      )}</td><td>${fmt(it.qty * it.unit)}</td>`;
+      qRows.appendChild(tr);
+
+      // Multiple images
+      if (it.imgs && it.imgs.length) {
+        const imgRow = document.createElement("tr");
+        const imgsHTML = it.imgs
+          .map(
+            (src) =>
+              `<img src="${src}" style="max-height:100px; max-width:200px; margin-right:4px;">`
+          )
+          .join("");
+        imgRow.innerHTML = `<td colspan="5" style="display:flex; gap:4px; flex-wrap:wrap;">${imgsHTML}</td>`;
+        qRows.appendChild(imgRow);
+      }
+    });
+
+    const sub = parseFloat($("subtotal").textContent);
+    const disc = parseFloat($("discount").value) || 0;
+    const tax = parseFloat($("tax").value) || 0;
+    const grand = (sub - disc) * (1 + tax / 100);
+    $("qSubtotal").textContent = fmt(sub) + " BHD";
+    $("qDiscount").textContent = fmt(disc) + " BHD";
+    $("qTax").textContent = fmt((sub - disc) * tax / 100) + " BHD";
+    $("qGrand").textContent = fmt(grand) + " BHD";
+  }
+
+  $("btnAdd").onclick = () => addItem();
+  $("discount").oninput = () => {
+    calcTotals();
+    syncPreview();
+  };
+  $("tax").oninput = () => {
+    calcTotals();
+    syncPreview();
+  };
+
+  // Save/Load
+  $("btnSave").onclick = () => {
+    const data = {
+      bizName: $("bizName").value,
+      bizContact: $("bizContact").value,
+      custName: $("custName").value,
+      custPhone: $("custPhone").value,
+      quoteNo: $("quoteNo").value,
+      quoteDate: $("quoteDate").value,
+      notes: $("notes").value,
+      discount: $("discount").value,
+      tax: $("tax").value,
+      items: state.items,
+    };
+    localStorage.setItem("quotationData", JSON.stringify(data));
+    alert("Data saved successfully!");
+  };
+
+  $("btnLoad").onclick = () => {
+    const saved = localStorage.getItem("quotationData");
+    if (!saved) {
+      alert("No saved data found.");
+      return;
+    }
+    try {
+      const data = JSON.parse(saved);
+      $("bizName").value = data.bizName || "";
+      $("bizContact").value = data.bizContact || "";
+      $("custName").value = data.custName || "";
+      $("custPhone").value = data.custPhone || "";
+      $("quoteNo").value = data.quoteNo || "";
+      $("quoteDate").value = data.quoteDate || "";
+      $("notes").value = data.notes || "";
+      $("discount").value = data.discount || "0";
+      $("tax").value = data.tax || "0";
+      state.items = data.items || [];
+      renderItems();
+      syncPreview();
+      alert("Data loaded successfully!");
+    } catch (e) {
+      alert("Error loading data.");
+    }
+  };
+
+  // PDF generator
+  $("btnPDF").onclick = async () => {
+  syncPreview();
+  await imagesLoaded($("pdfArea")); // wait for images
+  $("pdfArea").style.display = "block"; // make sure visible
+
+  html2canvas($("pdfArea"), { scale: 2, useCORS: true }).then((canvas) => {
+    const imgData = canvas.toDataURL("image/png");
+    
+    // Download the image
+    const link = document.createElement("a");
+    link.href = imgData;
+    link.download = `Quotation_${$("quoteNo").value || "quote"}.png`;
+    link.click();
+  });
+};
+
+
+  $("btnShare").onclick = () => {
+    const custName = $("custName").value || "Customer";
+    const quoteNo = $("quoteNo").value || "001";
+    const total = $("grand").textContent;
+    const bizName = $("bizName").value || "Your Business";
+    const message = `Hi ${custName}! Here's your quotation #${quoteNo} from ${bizName}. Total: ${total} BHD.`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  // Init sample
+  $("quoteDate").value = new Date().toISOString().slice(0, 10);
+  addItem({
+    name: "Dining Table",
+    desc: "Wood, 180x90x75 cm",
+    qty: 1,
+    unit: 150,
+    imgs: [],
+  });
+  addItem({ name: "Chair", desc: "Wood, cushioned, 45x45x90 cm", qty: 4, unit: 40, imgs: [] });
+  setTimeout(syncPreview, 100);
+  ["bizName", "bizContact", "custName", "custPhone", "quoteNo", "quoteDate", "notes"].forEach(
+    (id) => {
+      $(id).addEventListener("input", syncPreview);
+    }
+  );
+});
+
+</script>
+</body>
+</html>
